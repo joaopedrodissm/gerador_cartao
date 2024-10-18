@@ -10,7 +10,6 @@ Este projeto tem como objetivo gerar cartões de identificação personalizados 
   - Email corporativo
   - Telefone de contato
   - Foto do funcionário
-- **Estilização Personalizada**: Aplicação da fonte `Rock Star Narrow Medium` para o texto.
-- **Exportação em Diversos Formatos**: Salve os cartões em formatos como `.png`, `.pdf`, e `.svg`.
+
   
 
