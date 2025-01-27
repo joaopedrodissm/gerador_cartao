@@ -1,0 +1,82 @@
+
+body {
+background-color: rgb(218, 233, 243) !important;
+font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+color: rgb(21, 11, 61);
+text-align: center;
+font-family: 'Roboto', sans-serif;
+font-size: 35px;
+}
+
+.main-content {
+max-width: 900px;
+margin: 40px auto;
+padding: 20px;
+background-color: #fff;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+border-radius: 8px;
+}
+
+.page-header {
+margin-bottom: 20px;
+text-align: center;
+}
+
+.form-group {
+margin-bottom: 20px;
+}
+
+label {
+display: block;
+margin-bottom: 5px;
+font-weight: bold;
+color: #35486a;
+}
+
+.form-control {
+width: 100%;
+padding: 10px;
+border: 1px solid #ccc;
+border-radius: 4px;
+}
+
+.btn {
+display: inline-block;
+padding: 10px 20px;
+font-size: 16px;
+color: #fff;
+background-color: #35486a;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+text-align: center;
+}
+
+.btn:hover {
+background-color: #2b3c57;
+}
+
+.btn-success {
+background-color: #28a745;
+}
+
+.btn-success:hover {
+background-color: #218838;
+}
+
+.hidden {
+display: none;
+}
+
+#cardPreview {
+margin-top: 20px;
+text-align: center;
+}
+
+canvas {
+border: 1px solid #ccc;
+border-radius: 4px;
+}

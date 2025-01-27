@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8" />
+  <title>CARTÃO - ADICIONAR</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+  <div class="main-content">
+    <div class="page-content">
+      <div class="page-header">
+        <h1>GERADOR DE CARTÃO</h1>
+      </div>
+      <div class="space"></div>
+
+      <form method="post" autocomplete="off" enctype="multipart/form-data">
+
+        <div class="form-group">
+          <label for="name">Nome do Funcionário</label>
+          <input type="text" id="name" name="name" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email do Funcionário</label>
+          <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="telefone">Telefone do Funcionário</label>
+          <input type="tel" id="telefone" name="telefone" class="form-control" pattern="\(\d{2}\)\d{5}-\d{4}" placeholder="(99)99999-9999" required>
+        </div>
+
+        <div class="form-group">
+          <label for="cargo">Cargo</label>
+          <input type="text" id="cargo" name="cargo" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="base64Foto">Foto</label>
+          <input type="file" id="base64Foto" name="base64Foto" accept="image/*" class="form-control" required>
+        </div>
+
+        <button type="button" class="btn" onclick="generateCard()">Visualizar Cartão</button>
+        <button type="submit" id="buttonSalvar" name="button" class="btn btn-success hidden"><i class="icon-save bigger-110"></i> Salvar</button>
+      </form>
+
+      <div id="cardPreview" style="display:none;">
+        <h2>Preview do Cartão</h2>
+        <canvas id="cardCanvasPreview"></canvas>
+        <br>
+        <button type="button" class="btn" id="downloadButton" style="display:none;" onclick="downloadCard()">Download</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function generateCard() {
+      var name = document.getElementById('name').value.toUpperCase();
+      var email = document.getElementById('email').value;
+      var cargo = document.getElementById('cargo').value;
+      var telefone = document.getElementById('telefone').value;
+      var image = document.getElementById('base64Foto').files[0];
+
+      if (name && email && cargo && telefone && image) {
+        var canvas = document.getElementById('cardCanvasPreview');
+        var ctx = canvas.getContext('2d');
+
+        var background = new Image();
+        background.src = 'modelo_cartao.png';
+
+        background.onload = function () {
+          canvas.width = background.width;
+          canvas.height = background.height;
+          ctx.drawImage(background, 0, 0);
+
+          ctx.font = 'bold 15px Roboto';
+          ctx.fillStyle = '#2F4F4F';
+          ctx.fillText(name, 200, 30);
+
+          ctx.font = '15px Roboto';
+          ctx.fillStyle = '#2F4F4F';
+          ctx.fillText(cargo, 200, 45);
+
+          ctx.font = '15px Open Sans';
+          ctx.fillStyle = '#2F4F4F';
+          ctx.fillText(email, 200, 70);
+
+          ctx.font = '15px Roboto';
+          ctx.fillStyle = '#2F4F4F';
+          ctx.fillText(telefone, 200, 95);
+
+          var profileImage = new Image();
+          profileImage.src = URL.createObjectURL(image);
+          profileImage.onload = function () {
+            var photoX = 450; // Posição X da foto
+            var photoY = 5; // Posição Y da foto
+            var photoWidth = 110; // Largura da foto
+            var photoHeight = 110; // Altura da foto
+
+            ctx.save(); // Salva o estado atual do contexto
+            ctx.beginPath();
+            ctx.arc(photoX + photoWidth / 2, photoY + photoHeight / 2, 55, 0, 2 * Math.PI);
+            ctx.closePath();
+            ctx.clip();
+
+            ctx.drawImage(profileImage, photoX, photoY, photoWidth, photoHeight);
+            ctx.restore(); // Restaura o estado do contexto
+
+            showCardPreview();
+            document.getElementById('downloadButton').style.display = 'block';
+          };
+        };
+      } else {
+        alert('Por favor, preencha todos os campos.');
+      }
+    }
+
+    function showCardPreview() {
+      var cardPreview = document.getElementById('cardPreview');
+      cardPreview.style.display = 'block';
+    }
+
+    function downloadCard() {
+      var canvas = document.getElementById('cardCanvasPreview');
+      canvas.toBlob(function (blob) {
+        saveAs(blob, 'cartao_visita.png');
+      });
+    }
+  </script>
+</body>
+
+</html>
