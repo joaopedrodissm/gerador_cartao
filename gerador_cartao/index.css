@@ -37,7 +37,7 @@ color: #35486a;
 }
 
 .form-control {
-width: 100%;
+width: 98%;
 padding: 10px;
 border: 1px solid #ccc;
 border-radius: 4px;
@@ -80,3 +80,19 @@ canvas {
 border: 1px solid #ccc;
 border-radius: 4px;
 }
+
+#canvasDownload {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #35486a;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+

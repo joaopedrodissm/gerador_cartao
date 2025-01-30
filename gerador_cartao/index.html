@@ -46,16 +46,13 @@
         </div>
 
         <button type="button" class="btn" onclick="generateCard()">Visualizar Cartão</button>
-        <button type="submit" id="buttonSalvar" name="button" class="btn btn-success hidden"><i class="icon-save bigger-110"></i> Salvar</button>
+      
+        <div id="cardPreview" style="display:none;">
+          <h2>Preview do Cartão</h2>
+          <canvas id="cardCanvasPreview"></canvas>
+          <a id="canvasDownload" class="btn" href="#" download style="display:none;">Download Cartão</a>
+        </div>
       </form>
-
-      <div id="cardPreview" style="display:none;">
-        <h2>Preview do Cartão</h2>
-        <canvas id="cardCanvasPreview"></canvas>
-        <br>
-        <button type="button" class="btn" id="downloadButton" style="display:none;" onclick="downloadCard()">Download</button>
-      </div>
-
     </div>
   </div>
 
@@ -77,49 +74,53 @@
         background.onload = function () {
           canvas.width = background.width;
           canvas.height = background.height;
-          ctx.drawImage(background, 0, 0);
+          ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
           ctx.font = 'bold 15px Roboto';
           ctx.fillStyle = '#2F4F4F';
-          ctx.fillText(name, 200, 30);
+          ctx.fillText(name, 220, 30);
 
-          ctx.font = '15px Roboto';
+          ctx.font = '13px Roboto';
           ctx.fillStyle = '#2F4F4F';
-          ctx.fillText(cargo, 200, 45);
+          ctx.fillText(cargo, 220, 55);
 
-          ctx.font = '15px Open Sans';
+          ctx.font = '13px Open Sans';
           ctx.fillStyle = '#2F4F4F';
-          ctx.fillText(email, 200, 70);
+          ctx.fillText(email, 220, 80);
 
-          ctx.font = '15px Roboto';
+          ctx.font = '13px Roboto';
           ctx.fillStyle = '#2F4F4F';
-          ctx.fillText(telefone, 200, 95);
+          ctx.fillText(telefone, 220, 105);
 
           var profileImage = new Image();
           profileImage.src = URL.createObjectURL(image);
           profileImage.onload = function () {
-            var photoX = 450; // Posição X da foto
-            var photoY = 5; // Posição Y da foto
-            var photoWidth = 110; // Largura da foto
-            var photoHeight = 110; // Altura da foto
+              var photoX = 450;
+              var photoY = 5;
+              var photoWidth = 110;
+              var photoHeight = 110;
 
-            ctx.save(); // Salva o estado atual do contexto
-            ctx.beginPath();
-            ctx.arc(photoX + photoWidth / 2, photoY + photoHeight / 2, 55, 0, 2 * Math.PI);
-            ctx.closePath();
-            ctx.clip();
+              ctx.save();
+              ctx.beginPath();
+              ctx.arc(photoX + photoWidth / 2, photoY + photoHeight / 2, 55, 0, 2 * Math.PI);
+              ctx.closePath();
+              ctx.clip();
+              ctx.drawImage(profileImage, photoX, photoY, photoWidth, photoHeight);
+              ctx.restore();
 
-            ctx.drawImage(profileImage, photoX, photoY, photoWidth, photoHeight);
-            ctx.restore(); // Restaura o estado do contexto
+              // Exibe preview e habilitar download
+              document.getElementById('cardPreview').style.display = 'block';
 
-            showCardPreview();
-            document.getElementById('downloadButton').style.display = 'block';
+              // Atualiza o link para baixar a imagem
+              var pngDataUrl = canvas.toDataURL("image/png");
+              document.getElementById('canvasDownload').href = pngDataUrl;
+              document.getElementById('canvasDownload').style.display = 'block';
           };
         };
-      } else {
+    } else {
         alert('Por favor, preencha todos os campos.');
-      }
     }
+  }
 
     function showCardPreview() {
       var cardPreview = document.getElementById('cardPreview');
@@ -127,12 +128,15 @@
     }
 
     function downloadCard() {
-      var canvas = document.getElementById('cardCanvasPreview');
-      canvas.toBlob(function (blob) {
-        saveAs(blob, 'cartao_visita.png');
-      });
+      var canvas = document.getElementById("cardCanvasPreview"); 
+      var pngDataUrl = canvas.toDataURL("image/png");
+
+      var downloadLink = document.getElementById("canvasDownload");
+      downloadLink.href = pngDataUrl;
+      downloadLink.style.display = 'block';
     }
+
   </script>
 </body>
-
 </html>
+
